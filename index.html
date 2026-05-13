@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melodia Ta | Universul Muzical</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary: #8b5cf6;
+            --secondary: #ec4899;
+            --dark: #0f172a;
+            --light: #f8fafc;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            scroll-behavior: smooth;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 25px -5px rgba(139, 92, 246, 0.2);
+        }
+
+        .section-padding {
+            padding: 80px 20px;
+        }
+
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .hidden-menu {
+            transform: translateX(100%);
+        }
+
+        /* Modal Styles */
+        #course-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(0,0,0,0.85);
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Modal Formular Inscriere Curs -->
+    <div id="course-modal">
+        <div class="glass p-8 rounded-3xl max-w-md w-full mx-4 relative border border-purple-500/30">
+            <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="text-2xl font-bold mb-2 text-purple-400">Înscriere Curs</h3>
+            <p id="modal-course-name" class="text-pink-400 mb-6 font-semibold text-lg"></p>
+            <form id="enrollment-form" class="space-y-4">
+                <div class="space-y-1">
+                    <label class="text-xs text-gray-400 ml-1">Nume Complet</label>
+                    <input type="text" placeholder="Ex: Ion Popescu" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 outline-none transition">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs text-gray-400 ml-1">Adresa de Email</label>
+                    <input type="email" placeholder="nume@exemplu.com" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 outline-none transition">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 py-4 rounded-xl font-bold mt-4 hover:scale-[1.02] transition shadow-lg">Confirmă Înscrierea</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Navigare -->
+    <nav class="fixed w-full z-50 glass">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-music text-2xl text-purple-500"></i>
+                <span class="text-xl font-bold tracking-tighter">MELODIA<span class="text-pink-500">TA</span></span>
+            </div>
+            
+            <ul class="hidden md:flex gap-8 text-sm font-medium">
+                <li><a href="#home" class="hover:text-purple-400 transition">Acasă</a></li>
+                <li><a href="#stiluri" class="hover:text-purple-400 transition">Stiluri</a></li>
+                <li><a href="#teorie" class="hover:text-purple-400 transition">Teorie</a></li>
+                <li><a href="#personalitati" class="hover:text-purple-400 transition">Artiști</a></li>
+                <li><a href="#festivaluri" class="hover:text-purple-400 transition">Festivaluri</a></li>
+                <li><a href="#cursuri" class="hover:text-purple-400 transition">Cursuri</a></li>
+            </ul>
+
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-2xl"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-slate-900 z-[60] flex flex-col items-center justify-center gap-8 text-2xl font-bold hidden-menu md:hidden">
+        <button id="mobile-close-btn" class="absolute top-6 right-6"><i class="fas fa-times"></i></button>
+        <a href="#home" class="mobile-link">Acasă</a>
+        <a href="#stiluri" class="mobile-link">Stiluri</a>
+        <a href="#teorie" class="mobile-link">Teorie</a>
+        <a href="#personalitati" class="mobile-link">Artiști</a>
+        <a href="#festivaluri" class="mobile-link">Festivaluri</a>
+        <a href="#cursuri" class="mobile-link">Cursuri</a>
+    </div>
+
+    <!-- Hero Section -->
+    <header id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+        <!-- Imagine 1 furnizata de utilizator -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://share.google/images/g6PQzjxLexFU72blD" alt="Atmosferă Muzicală Hero" class="w-full h-full object-cover opacity-30">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-slate-900/50 to-slate-900"></div>
+        </div>
+        
+        <div class="max-w-5xl mx-auto text-center px-4 relative z-10">
+            <h1 class="text-5xl md:text-8xl font-black mb-6 leading-tight">
+                Universul <span class="gradient-text">Sunetului</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto drop-shadow-lg">
+                Explorează magia muzicii, de la vibrația corzilor de chitară până la energia marilor festivaluri.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#stiluri" class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-full font-bold transition flex items-center gap-2 shadow-lg shadow-purple-500/20">
+                    Explorează Genurile
+                </a>
+                <a href="#cursuri" class="bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-full font-bold transition backdrop-blur-md">
+                    Învață cu Noi
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Importanta Muzicii -->
+    <section class="max-w-7xl mx-auto section-padding">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="relative">
+                <!-- Imagine 2 furnizata de utilizator -->
+                <img src="https://share.google/images/OAOw7q1PbaQCR0g3W" alt="Pasiune pentru Muzică" class="rounded-3xl shadow-2xl w-full h-[500px] object-cover">
+                <div class="absolute -bottom-6 -right-6 glass p-6 rounded-2xl hidden lg:block">
+                    <p class="text-xl font-bold text-pink-400">Impact Profund</p>
+                </div>
+            </div>
+            <div>
+                <h2 class="text-3xl md:text-4xl font-bold mb-6">De ce muzica este <span class="text-purple-500">esențială</span>?</h2>
+                <p class="text-gray-400 mb-6 leading-relaxed text-lg">
+                    Muzica nu este doar o succesiune de note; este singura formă de artă care pătrunde instantaneu în suflet, schimbându-ne starea și modul de a vedea lumea.
+                </p>
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-purple-600/20 flex items-center justify-center text-purple-400">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <p class="font-medium">Vindecă și calmează stresul cotidian.</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-pink-600/20 flex items-center justify-center text-pink-400">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <p class="font-medium">Îmbunătățește memoria și concentrarea.</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-blue-600/20 flex items-center justify-center text-blue-400">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <p class="font-medium">Limbajul universal care ne unește pe toți.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stiluri de Muzică -->
+    <section id="stiluri" class="bg-slate-900/80 section-padding">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Genuri Muzicale</h2>
+                <p class="text-gray-400">O călătorie prin diversitatea sunetului.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="genres-container">
+                <!-- Din JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Teorie Muzicală -->
+    <section id="teorie" class="section-padding max-w-7xl mx-auto">
+        <div class="glass p-8 md:p-16 rounded-[40px] relative overflow-hidden">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold mb-8">Teorie și Structură</h2>
+                    <div class="space-y-6 text-gray-300">
+                        <div class="p-4 bg-white/5 rounded-xl border-l-4 border-purple-500">
+                            <h3 class="font-bold text-white mb-1">Notele Muzicale</h3>
+                            <p>Do, Re, Mi, Fa, Sol, La, Si – baza oricărei compoziții.</p>
+                        </div>
+                        <div class="p-4 bg-white/5 rounded-xl border-l-4 border-pink-500">
+                            <h3 class="font-bold text-white mb-1">Ritm și Melodie</h3>
+                            <p>Ritmul dă viață timpului, iar melodia dă identitate sunetului.</p>
+                        </div>
+                        <div class="p-4 bg-white/5 rounded-xl border-l-4 border-blue-500">
+                            <h3 class="font-bold text-white mb-1">Acorduri și Game</h3>
+                            <p>Armonia creată de suprapunerea sunetelor.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Imagine 3 furnizata de utilizator -->
+                <div class="relative">
+                    <img src="https://share.google/images/4rmfYj10kLD9JKPnz" alt="Teorie Muzicală Design" class="rounded-2xl shadow-2xl w-full h-[400px] object-cover">
+                    <div class="absolute inset-0 ring-1 ring-white/10 rounded-2xl"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tipsuri Muzicieni -->
+    <section class="section-padding">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-16">Sfaturi pentru viitori artiști</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="p-6 glass rounded-2xl card-hover">
+                    <i class="fas fa-play-circle text-purple-500 text-3xl mb-4"></i>
+                    <h3 class="font-bold mb-2">Începe azi</h3>
+                    <p class="text-sm text-gray-400">Nu aștepta instrumentul perfect. Începe cu ce ai la îndemână.</p>
+                </div>
+                <div class="p-6 glass rounded-2xl card-hover">
+                    <i class="fas fa-redo text-pink-500 text-3xl mb-4"></i>
+                    <h3 class="font-bold mb-2">Exersează lent</h3>
+                    <p class="text-sm text-gray-400">Precizia este mai importantă decât viteza în primele luni.</p>
+                </div>
+                <div class="p-6 glass rounded-2xl card-hover">
+                    <i class="fas fa-feather-alt text-blue-500 text-3xl mb-4"></i>
+                    <h3 class="font-bold mb-2">Compune</h3>
+                    <p class="text-sm text-gray-400">Încearcă să creezi propriile melodii pentru a-ți găsi stilul.</p>
+                </div>
+                <div class="p-6 glass rounded-2xl card-hover">
+                    <i class="fas fa-share-alt text-green-500 text-3xl mb-4"></i>
+                    <h3 class="font-bold mb-2">Distribuie</h3>
+                    <p class="text-sm text-gray-400">Publică-ți munca online pentru a primi feedback constructiv.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Personalități (Folosind imaginile utilizatorului) -->
+    <section id="personalitati" class="section-padding max-w-7xl mx-auto">
+        <h2 class="text-4xl font-bold mb-16 text-center">Legende Muzicale</h2>
+        <div class="grid md:grid-cols-2 gap-10" id="artists-container">
+            <!-- Din JS -->
+        </div>
+    </section>
+
+    <!-- Evenimente Celebre (Folosind imaginile utilizatorului) -->
+    <section class="bg-slate-950 section-padding">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-bold mb-16 text-center">Evenimente Istorice</h2>
+            <div class="grid md:grid-cols-2 gap-10">
+                <div class="glass rounded-[32px] overflow-hidden group">
+                    <div class="h-[350px] overflow-hidden">
+                        <img src="https://share.google/images/6jPEDlV1Ey3fmY2C4" alt="Live Aid 1985" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-3xl font-bold mb-2">Live Aid 1985</h3>
+                        <p class="text-gray-400">Wembley Stadium a găzduit cea mai mare mobilizare muzicală pentru o cauză nobilă din istorie.</p>
+                    </div>
+                </div>
+                <div class="glass rounded-[32px] overflow-hidden group">
+                    <div class="h-[350px] overflow-hidden">
+                        <img src="https://share.google/images/NadWqIv63SkxfKdyv" alt="Woodstock 1969" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-3xl font-bold mb-2">Woodstock 1969</h3>
+                        <p class="text-gray-400">Trei zile de pace, dragoste și muzică care au schimbat cultura tineretului pentru totdeauna.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Festivaluri (Folosind imaginile utilizatorului) -->
+    <section id="festivaluri" class="section-padding max-w-7xl mx-auto">
+        <h2 class="text-4xl font-bold mb-12 text-center">Festivaluri de Top</h2>
+        <div class="grid lg:grid-cols-3 gap-8" id="festivals-container">
+            <!-- Din JS -->
+        </div>
+    </section>
+
+    <!-- Academia de Cursuri -->
+    <section id="cursuri" class="section-padding bg-slate-900/50">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-bold mb-16 text-center">Academia Noastră</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="courses-container">
+                <!-- Din JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Footer -->
+    <footer class="pt-20 pb-10 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 mb-20">
+            <div>
+                <h2 class="text-4xl font-black mb-6">MELODIA<span class="text-purple-500">TA</span></h2>
+                <p class="text-gray-400 mb-8 max-w-md">Susținem educația muzicală și pasiunea pentru sunet. Vino alături de noi în această călătorie sonoră.</p>
+                <div class="flex gap-6 text-2xl">
+                    <i class="fab fa-instagram hover:text-pink-500 cursor-pointer transition"></i>
+                    <i class="fab fa-facebook hover:text-blue-500 cursor-pointer transition"></i>
+                    <i class="fab fa-spotify hover:text-green-500 cursor-pointer transition"></i>
+                </div>
+            </div>
+            <form class="glass p-8 rounded-3xl space-y-4">
+                <input type="text" placeholder="Numele tău" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-purple-500 transition">
+                <textarea placeholder="Cum te putem ajuta?" rows="3" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-purple-500 transition"></textarea>
+                <button class="w-full bg-purple-600 py-3 rounded-xl font-bold hover:bg-purple-700 transition">Trimite Mesaj</button>
+            </form>
+        </div>
+        <div class="text-center text-gray-600 text-sm">
+            &copy; 2024 MelodiaTa. Toate drepturile rezervate.
+        </div>
+    </footer>
+
+    <script>
+        // Date Stiluri Muzicale
+        const genres = [
+            { name: 'Rock', desc: 'Ritmuri puternice și rebeliune.', traits: 'Chitară distorsionată, solo-uri.', artists: 'Queen, AC/DC' },
+            { name: 'Pop', desc: 'Sufletul topurilor muzicale globale.', traits: 'Ritmuri catchy, vers-refren.', artists: 'Michael Jackson, Madonna' },
+            { name: 'Jazz', desc: 'Libertate și improvizație pură.', traits: 'Instrumentație bogată, swing.', artists: 'Miles Davis, Louis Armstrong' },
+            { name: 'Hip-Hop', desc: 'Vocea străzii și poezie ritmică.', traits: 'Beat-uri, MCing, DJing.', artists: 'Eminem, Tupac' },
+            { name: 'Classical', desc: 'Capodopere eterne ale orchestrelor.', traits: 'Complexitate, notație strictă.', artists: 'Mozart, Beethoven' },
+            { name: 'Electronic', desc: 'Energia sunetului digital.', traits: 'Sintetizatoare, loop-uri.', artists: 'Daft Punk, Avicii' },
+            { name: 'Indie', desc: 'Spirit independent și creativ.', traits: 'Sunet organic, nonconformism.', artists: 'Arctic Monkeys, Lana Del Rey' },
+            { name: 'Metal', desc: 'Putere brută și virtuozitate.', traits: 'Viteza, tobe duble, riff-uri.', artists: 'Metallica, Iron Maiden' },
+            { name: 'Blues', desc: 'Rădăcina multor genuri moderne.', traits: 'Structură de 12 măsuri, emoție.', artists: 'B.B. King, Muddy Waters' },
+            { name: 'Reggae', desc: 'Vibrația pozitivă a insulelor.', traits: 'Ritm off-beat, bas puternic.', artists: 'Bob Marley' }
+        ];
+
+        // Date Personalități (CU IMAGINILE FURNIZATE)
+        const artists = [
+            { 
+                name: 'Michael Jackson', 
+                img: 'https://share.google/images/AADJH9TmUdvodvFZ1', 
+                style: 'Pop', 
+                hits: 'Billie Jean, Thriller',
+                bio: 'Regele Pop-ului a redefinit spectacolul vizual și muzical.'
+            },
+            { 
+                name: 'Freddie Mercury', 
+                img: 'https://share.google/images/3ozSLtTAw94RvhBmp', 
+                style: 'Rock', 
+                hits: 'Bohemian Rhapsody, Somebody to Love',
+                bio: 'Vocalistul Queen, recunoscut pentru carisma și vocea sa de neegalat.'
+            },
+            { 
+                name: 'Beyoncé', 
+                img: 'https://share.google/images/ujCGJMK9GrZiBl4Ct', 
+                style: 'R&B / Pop', 
+                hits: 'Single Ladies, Halo',
+                bio: 'O forță a industriei muzicale moderne, simbol al excelenței.'
+            },
+            { 
+                name: 'Wolfgang Amadeus Mozart', 
+                img: 'https://share.google/images/yBKDg6ZRlrSPRyzuk', 
+                style: 'Clasic', 
+                hits: 'Simfonia 40, Nunta lui Figaro',
+                bio: 'Geniul muzicii clasice, autor a sute de compoziții nemuritoare.'
+            }
+        ];
+
+        // Date Festivaluri (CU IMAGINILE FURNIZATE)
+        const festivals = [
+            { 
+                name: 'Untold', 
+                img: 'https://share.google/images/Bn1YdotfAQ2pdNTMe', 
+                loc: 'România', 
+                info: 'Unul dintre cele mai mari festivaluri EDM din Europa.' 
+            },
+            { 
+                name: 'Coachella', 
+                img: 'https://share.google/images/CzXfJ0iihEDWVaOKH', 
+                loc: 'California, SUA', 
+                info: 'Unde muzica se întâlnește cu moda și arta modernă.' 
+            },
+            { 
+                name: 'Tomorrowland', 
+                img: 'https://share.google/images/DLvsZGBYzggHtN0Hj', 
+                loc: 'Boom, Belgia', 
+                info: 'O experiență magică în regatul muzicii electronice.' 
+            }
+        ];
+
+        // Date Cursuri
+        const courses = [
+            { name: 'Curs Chitară', level: 'Începător', price: '45€', duration: '12 ședințe' },
+            { name: 'Curs Pian', level: 'Mediu', price: '60€', duration: '10 ședințe' },
+            { name: 'Curs Canto', level: 'Toate nivelurile', price: '50€', duration: '8 ședințe' },
+            { name: 'Producție Muzicală', level: 'Avansat', price: '85€', duration: '16 ședințe' },
+            { name: 'Teorie Muzicală', level: 'Începător', price: '30€', duration: '6 ședințe' }
+        ];
+
+        // Randare Stiluri
+        const gCont = document.getElementById('genres-container');
+        genres.forEach(g => {
+            gCont.innerHTML += `
+                <div class="glass p-8 rounded-3xl card-hover border-b-2 border-transparent hover:border-purple-500">
+                    <h3 class="text-2xl font-bold text-white mb-2">${g.name}</h3>
+                    <p class="text-sm text-gray-400 mb-4 italic">"${g.desc}"</p>
+                    <div class="text-xs space-y-1 text-gray-300">
+                        <p><strong>Instrumente:</strong> ${g.traits}</p>
+                        <p><strong>Artiști:</strong> ${g.artists}</p>
+                    </div>
+                </div>
+            `;
+        });
+
+        // Randare Personalități
+        const aCont = document.getElementById('artists-container');
+        artists.forEach(a => {
+            aCont.innerHTML += `
+                <div class="glass rounded-3xl overflow-hidden flex flex-col md:flex-row gap-6 p-4">
+                    <img src="${a.img}" alt="${a.name}" class="w-full md:w-48 h-64 md:h-auto object-cover rounded-2xl">
+                    <div class="flex-grow py-4">
+                        <h3 class="text-2xl font-bold mb-1">${a.name}</h3>
+                        <p class="text-pink-400 text-sm font-bold mb-4 uppercase tracking-widest">${a.style}</p>
+                        <p class="text-gray-400 text-sm mb-4 leading-relaxed">${a.bio}</p>
+                        <p class="text-xs text-purple-300 italic">Hituri: ${a.hits}</p>
+                    </div>
+                </div>
+            `;
+        });
+
+        // Randare Festivaluri
+        const fCont = document.getElementById('festivals-container');
+        festivals.forEach(f => {
+            fCont.innerHTML += `
+                <div class="glass rounded-3xl overflow-hidden group">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="${f.img}" alt="${f.name}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute top-4 left-4 bg-purple-600 text-white text-xs px-3 py-1 rounded-full">${f.loc}</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">${f.name}</h3>
+                        <p class="text-gray-400 text-sm">${f.info}</p>
+                    </div>
+                </div>
+            `;
+        });
+
+        // Randare Cursuri
+        const cCont = document.getElementById('courses-container');
+        courses.forEach(c => {
+            cCont.innerHTML += `
+                <div class="glass p-8 rounded-[40px] flex flex-col items-center text-center">
+                    <div class="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 mb-4">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-1">${c.name}</h3>
+                    <span class="text-[10px] uppercase font-bold text-gray-500 mb-4">${c.level}</span>
+                    <p class="text-3xl font-black mb-1">${c.price}</p>
+                    <p class="text-gray-500 text-xs mb-6">${c.duration}</p>
+                    <button onclick="openEnroll('${c.name}')" class="w-full bg-white/5 hover:bg-purple-600 border border-white/10 py-3 rounded-2xl transition font-bold">Înscrie-te</button>
+                </div>
+            `;
+        });
+
+        // Logica Modal
+        const modal = document.getElementById('course-modal');
+        const modalTitle = document.getElementById('modal-course-name');
+        
+        function openEnroll(courseName) {
+            modalTitle.innerText = courseName;
+            modal.style.display = 'flex';
+        }
+
+        document.getElementById('close-modal').addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        document.getElementById('enrollment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Cererea de înscriere pentru ' + modalTitle.innerText + ' a fost trimisă!');
+            modal.style.display = 'none';
+        });
+
+        // Meniu Mobil
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const closeMobile = document.getElementById('mobile-close-btn');
+
+        menuBtn.addEventListener('click', () => mobileMenu.classList.remove('hidden-menu'));
+        closeMobile.addEventListener('click', () => mobileMenu.classList.add('hidden-menu'));
+        document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => mobileMenu.classList.add('hidden-menu')));
+
+    </script>
+</body>
+</html>
